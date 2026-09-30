@@ -1,0 +1,741 @@
+<!doctype html>
+
+<html lang="tr">
+
+<head>
+
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+<meta name="theme-color" content="#f5f5f7">
+
+<title>GP+ | Gönültaş Plus</title>
+
+<style>
+
+*{box-sizing:border-box}
+
+:root{
+
+--blue:#0a84ff;--green:#20b26b;--red:#ff453a;--orange:#ff9f0a;
+
+--ink:#111318;--muted:#70757f;--bg:#f3f4f7;--card:#fff;--line:#e7e8ec
+
+}
+
+body{
+
+margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+
+background:var(--bg);color:var(--ink);padding-bottom:88px
+
+}
+
+.top{position:sticky;top:0;z-index:20;background:#f7f7f9dd;backdrop-filter:blur(22px);border-bottom:1px solid #ffffff80}
+
+.topin{max-width:1180px;margin:auto;padding:15px 18px;display:flex;align-items:center;justify-content:space-between}
+
+.brand{font-weight:850;font-size:24px}
+
+.brand span{font-size:12px;font-weight:600;color:var(--muted);display:block}
+
+.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(145deg,#111,#6c727d);color:white;display:grid;place-items:center;font-weight:800}
+
+.wrap{max-width:1180px;margin:auto;padding:18px}
+
+.page{display:none}.page.active{display:block}
+
+.hero{
+
+border-radius:26px;padding:26px;color:white;
+
+background:radial-gradient(circle at 90% 0,#1f7bdc 0,transparent 35%),linear-gradient(135deg,#101923,#22364a 55%,#12171d);
+
+box-shadow:0 14px 35px #15283d2b;margin-bottom:15px
+
+}
+
+.hero h1{font-size:29px;line-height:1.08;margin:8px 0}
+
+.hero p{margin:0;opacity:.82}
+
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+
+.metric,.card{background:white;border-radius:21px;box-shadow:0 5px 20px #1a23300b}
+
+.metric{padding:16px}
+
+.label,.metric .label{font-size:12px;color:var(--muted)}
+
+.metric .value{font-size:21px;font-weight:820;margin-top:6px}
+
+.trend{font-size:12px;color:var(--green);margin-top:4px}
+
+.sectionHead{display:flex;align-items:center;justify-content:space-between;margin:22px 2px 10px}
+
+.sectionHead h2{margin:0;font-size:20px}
+
+.link{border:0;background:none;color:var(--blue);font-weight:700}
+
+.card{padding:16px}
+
+.project{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+
+.project:last-child{border-bottom:0}
+
+.thumb{width:56px;height:56px;border-radius:14px;background:linear-gradient(145deg,#bfc7cf,#606c78);display:grid;place-items:center;font-size:26px}
+
+.pname{font-weight:780}
+
+.sub{font-size:12px;color:var(--muted);margin-top:3px}
+
+.badge{font-size:11px;padding:5px 8px;border-radius:999px;background:#e9f8ef;color:#16834e}
+
+.progress{height:6px;border-radius:99px;background:#e9edf2;margin-top:8px;overflow:hidden}
+
+.progress i{display:block;height:100%;background:var(--blue)}
+
+.toolbar{display:flex;gap:10px;margin:8px 0 14px}
+
+.search{flex:1;background:white;border:1px solid var(--line);border-radius:14px;padding:12px 14px;font:inherit}
+
+.plus{width:44px;border:0;border-radius:14px;background:var(--blue);color:white;font-size:25px}
+
+.stockrow,.carirow{display:grid;grid-template-columns:1fr auto;gap:10px;padding:14px 0;border-bottom:1px solid var(--line)}
+
+.qty{font-size:18px;font-weight:820;text-align:right}
+
+.critical{font-size:11px;color:#b34c37;background:#ffebe6;padding:4px 7px;border-radius:8px;margin-top:4px}
+
+.modulegrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+
+.module{background:white;border:0;border-radius:20px;padding:17px 12px;text-align:left;box-shadow:0 5px 18px #1a23300b}
+
+.ico{font-size:25px;margin-bottom:9px}
+
+.module b{display:block}
+
+.module small{color:var(--muted)}
+
+.detailtop{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+
+.back{border:0;background:white;border-radius:12px;width:40px;height:40px;font-size:20px}
+
+.bottom{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fbfbfddd;backdrop-filter:blur(24px);border-top:1px solid #dfe1e5}
+
+.nav{max-width:700px;margin:auto;display:grid;grid-template-columns:repeat(5,1fr)}
+
+.nav button{border:0;background:none;padding:10px 4px 8px;color:#7c8490;font-size:11px}
+
+.nav button.on{color:var(--blue)}
+
+.nicon{font-size:21px;display:block}
+
+.sheetbg{display:none;position:fixed;inset:0;background:#0007;z-index:50;align-items:flex-end;justify-content:center}
+
+.sheetbg.show{display:flex}
+
+.sheet{width:min(650px,100%);background:#f8f8fa;border-radius:26px 26px 0 0;padding:18px;max-height:88vh;overflow:auto}
+
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.field{background:white;border-radius:14px;padding:9px 12px;border:1px solid var(--line)}
+
+.field label{font-size:11px;color:var(--muted);display:block}
+
+.field input,.field select{width:100%;border:0;outline:0;font:inherit;padding:5px 0;background:transparent}
+
+.full{grid-column:1/-1}
+
+.save{width:100%;border:0;border-radius:15px;background:var(--blue);color:white;padding:14px;font-size:16px;font-weight:750;margin-top:12px}
+
+.close{width:100%;border:0;background:none;padding:12px;color:var(--muted)}
+
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);opacity:0;background:#17191dcc;color:white;padding:11px 16px;border-radius:13px}
+
+.toast.show{opacity:1}
+
+@media(max-width:760px){
+
+.metrics{grid-template-columns:1fr 1fr}
+
+.modulegrid{grid-template-columns:1fr 1fr}
+
+.wrap{padding:13px}
+
+.hero h1{font-size:25px}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header class="top">
+
+<div class="topin">
+
+<div class="brand">Gönültaş Plus<span>Şirket Yönetim Sistemi · GP+</span></div>
+
+<div class="avatar">GP</div>
+
+</div>
+
+</header>
+
+<main class="wrap">
+
+<section id="home" class="page active">
+
+<div class="hero">
+
+<div>30 Eylül 2026 · Yönetim Özeti</div>
+
+<h1>Daha güçlü projeler.<br>Daha sağlam yarınlar.</h1>
+
+<p>Finans, şantiye, stok ve cari hareketler tek yerde.</p>
+
+</div>
+
+<div class="metrics">
+
+<div class="metric"><div class="label">Kasa & Banka</div><div class="value">12.450.000 ₺</div><div class="trend">↑ %12</div></div>
+
+<div class="metric"><div class="label">Alacaklar</div><div class="value">8.320.000 ₺</div><div class="trend">↑ %8</div></div>
+
+<div class="metric"><div class="label">Borçlar</div><div class="value">4.750.000 ₺</div></div>
+
+<div class="metric"><div class="label">Bu Ay Kâr</div><div class="value">3.280.000 ₺</div><div class="trend">↑ %24</div></div>
+
+</div>
+
+<div class="sectionHead"><h2>Aktif Şantiyeler</h2><button class="link" onclick="go('projects')">Tümünü Gör</button></div>
+
+<div class="card" id="homeProjects"></div>
+
+</section>
+
+<section id="projects" class="page">
+
+<div class="sectionHead"><h2>Şantiyeler</h2><button class="plus">+</button></div>
+
+<div class="toolbar"><input class="search" placeholder="Şantiye ara..."></div>
+
+<div class="card" id="projectList"></div>
+
+</section>
+
+<section id="stock" class="page">
+
+<div class="sectionHead"><h2>Stok / Depo</h2><button class="plus">+</button></div>
+
+<div class="toolbar"><input id="stockSearch" class="search" placeholder="Ürün ara..." oninput="renderStock()"></div>
+
+<div class="card" id="stockList"></div>
+
+</section>
+
+<section id="cari" class="page">
+
+<div class="sectionHead"><h2>Cari Hesaplar</h2><button class="plus">+</button></div>
+
+<div class="card" id="cariList"></div>
+
+</section>
+
+<section id="menu" class="page">
+
+<div class="sectionHead"><h2>Tüm Modüller</h2></div>
+
+<div class="modulegrid" id="modules"></div>
+
+</section>
+
+<section id="finance" class="page">
+
+<div class="detailtop">
+
+<button class="back" onclick="go('menu')">‹</button>
+
+<div><b>Finans Merkezi</b><div class="sub">Gelir · Gider · Banka · Cari · Fatura</div></div>
+
+</div>
+
+<div class="metrics">
+
+<div class="metric"><div class="label">Toplam Bakiye</div><div class="value" id="finBalance">0 ₺</div></div>
+
+<div class="metric"><div class="label">Bu Ay Gelir</div><div class="value" id="finIncome">0 ₺</div></div>
+
+<div class="metric"><div class="label">Bu Ay Gider</div><div class="value" id="finExpense">0 ₺</div></div>
+
+<div class="metric"><div class="label">Net Nakit</div><div class="value" id="finNet">0 ₺</div></div>
+
+</div>
+
+<div class="sectionHead">
+
+<h2>Yeni Finans İşlemi</h2>
+
+<button class="plus" onclick="openFinance()">+</button>
+
+</div>
+
+<div class="modulegrid">
+
+<button class="module" onclick="openFinance('Tahsilat')"><div class="ico">↓</div><b>Tahsilat</b><small>Cari + banka + fatura</small></button>
+
+<button class="module" onclick="openFinance('Ödeme')"><div class="ico">↑</div><b>Ödeme</b><small>Tedarikçi + banka + gider</small></button>
+
+</div>
+
+<div class="sectionHead"><h2>Son Hareketler</h2></div>
+
+<div class="card" id="finMoves"></div>
+
+</section>
+
+<section id="bank" class="page">
+
+<div class="detailtop"><button class="back" onclick="go('menu')">‹</button><b>Banka & Kasa</b></div>
+
+<div class="card">
+
+Garanti BBVA<br><br>
+
+VakıfBank<br><br>
+
+İş Bankası<br><br>
+
+Kuveyt Türk<br><br>
+
+Ziraat Bankası<br><br>
+
+Halkbank<br><br>
+
+DenizBank<br><br>
+
+TEB<br><br>
+
+Türkiye Finans
+
+</div>
+
+</section>
+
+<section id="personnel" class="page">
+
+<div class="detailtop"><button class="back" onclick="go('menu')">‹</button><b>Personel Merkezi</b></div>
+
+<div class="card" id="personnelList"></div>
+
+</section>
+
+<section id="isg" class="page">
+
+<div class="detailtop"><button class="back" onclick="go('menu')">‹</button><b>İSG Merkezi</b></div>
+
+<div class="modulegrid">
+
+<button class="module"><div class="ico">👷</div><b>Personel İSG</b><small>Eğitim ve belgeler</small></button>
+
+<button class="module"><div class="ico">🦺</div><b>KKD Teslim</b><small>Koruyucu ekipman</small></button>
+
+<button class="module"><div class="ico">⚠️</div><b>Risk Değerlendirme</b><small>Tehlike takibi</small></button>
+
+<button class="module"><div class="ico">📋</div><b>Saha Denetimi</b><small>Kontrol listeleri</small></button>
+
+</div>
+
+</section>
+
+</main>
+
+<nav class="bottom">
+
+<div class="nav">
+
+<button class="on" onclick="go('home')"><span class="nicon">⌂</span>Ana Ekran</button>
+
+<button onclick="go('projects')"><span class="nicon">🏗</span>Şantiyeler</button>
+
+<button onclick="go('stock')"><span class="nicon">▣</span>Stok</button>
+
+<button onclick="go('cari')"><span class="nicon">👥</span>Cari</button>
+
+<button onclick="go('menu')"><span class="nicon">☰</span>Menü</button>
+
+</div>
+
+</nav>
+
+<div class="sheetbg" id="finSheet">
+
+<div class="sheet">
+
+<h2>Finans İşlemi</h2>
+
+<div class="fields">
+
+<div class="field">
+
+<label>İşlem</label>
+
+<select id="ftype"><option>Tahsilat</option><option>Ödeme</option></select>
+
+</div>
+
+<div class="field">
+
+<label>Tutar</label>
+
+<input id="famount" type="number" placeholder="0,00">
+
+</div>
+
+<div class="field">
+
+<label>Cari</label>
+
+<select id="fcari">
+
+<option>Düzce TSO</option>
+
+<option>ABC Yapı Malzemeleri</option>
+
+<option>Demirhan Çelik</option>
+
+</select>
+
+</div>
+
+<div class="field">
+
+<label>Banka / Kasa</label>
+
+<select id="fbank">
+
+<option>Garanti BBVA</option>
+
+<option>VakıfBank</option>
+
+<option>İş Bankası</option>
+
+<option>Kuveyt Türk</option>
+
+<option>Ziraat Bankası</option>
+
+<option>Halkbank</option>
+
+<option>DenizBank</option>
+
+<option>TEB</option>
+
+<option>Türkiye Finans</option>
+
+<option>Merkez Kasa</option>
+
+</select>
+
+</div>
+
+<div class="field">
+
+<label>Şantiye</label>
+
+<select id="fsite">
+
+<option>Düzce TSO</option>
+
+<option>İstanbul AVM</option>
+
+<option>Ankara Lojistik</option>
+
+<option>Genel Merkez</option>
+
+</select>
+
+</div>
+
+<div class="field full">
+
+<label>Açıklama</label>
+
+<input id="fnote" placeholder="İşlem açıklaması">
+
+</div>
+
+</div>
+
+<button class="save" onclick="saveFinance()">İşlemi Kaydet</button>
+
+<button class="close" onclick="closeFinance()">Vazgeç</button>
+
+</div>
+
+</div>
+
+<div class="toast" id="toastbox"></div>
+
+<script>
+
+const projects=[
+
+{name:'Düzce TSO',client:'Kaba İnşaat',amount:'28.500.000 ₺',progress:65},
+
+{name:'İstanbul AVM',client:'Zemin Beton',amount:'18.750.000 ₺',progress:40},
+
+{name:'Ankara Lojistik',client:'Endüstriyel Zemin',amount:'12.400.000 ₺',progress:0},
+
+{name:'Bursa Fabrika',client:'Betonarme',amount:'9.800.000 ₺',progress:100}
+
+];
+
+const stocks=[
+
+['Çimento','Torba','1.250'],
+
+['Demir D14','Ton','28,5'],
+
+['Hasır Çelik','Adet','320'],
+
+['Makro Fiber','Kg','80'],
+
+['Yüzey Sertleştirici','Kg','450']
+
+];
+
+const caris=[
+
+['ABC Yapı Malzemeleri','Tedarikçi','1.240.000 ₺'],
+
+['Düzce TSO','Müşteri','9.900.000 ₺'],
+
+['Zemin Beton','Müşteri','2.650.000 ₺'],
+
+['Demirhan Çelik','Tedarikçi','860.000 ₺']
+
+];
+
+function projectHTML(p){
+
+return `<div class="project">
+
+<div class="thumb">🏗</div>
+
+<div><div class="pname">${p.name}</div>
+
+<div class="sub">${p.client} · ${p.amount}</div>
+
+<div class="progress"><i style="width:${p.progress}%"></i></div></div>
+
+<span class="badge">%${p.progress}</span>
+
+</div>`
+
+}
+
+function renderProjects(){
+
+projectList.innerHTML=projects.map(projectHTML).join('');
+
+homeProjects.innerHTML=projects.slice(0,3).map(projectHTML).join('')
+
+}
+
+function renderStock(){
+
+stockList.innerHTML=stocks.map(s=>`<div class="stockrow">
+
+<div><b>${s[0]}</b><div class="sub">${s[1]}</div></div>
+
+<div class="qty">${s[2]}</div></div>`).join('')
+
+}
+
+function renderCari(){
+
+cariList.innerHTML=caris.map(c=>`<div class="carirow">
+
+<div><b>${c[0]}</b><div class="sub">${c[1]}</div></div>
+
+<div class="qty">${c[2]}</div></div>`).join('')
+
+}
+
+const mods=[
+
+['💳','Gelir - Gider','finance'],
+
+['🏦','Banka & Kasa','bank'],
+
+['👥','Cari Hesaplar','cari'],
+
+['📦','Stok / Depo','stock'],
+
+['🧾','Faturalar',''],
+
+['💵','Çek - Senet',''],
+
+['👷','Personel','personnel'],
+
+['🚚','Araç - Makine',''],
+
+['%','Vergiler',''],
+
+['📁','Evraklar',''],
+
+['🤝','Ortaklar',''],
+
+['📊','Raporlar',''],
+
+['🦺','İSG','isg']
+
+];
+
+modules.innerHTML=mods.map(m=>`<button class="module" onclick="${m[2]?`go('${m[2]}')`:`toast('${m[1]} modülü hazırlanıyor')`}">
+
+<div class="ico">${m[0]}</div><b>${m[1]}</b></button>`).join('');
+
+const personnel=[
+
+['Ahmet Yılmaz','Beton Ustası','Düzce TSO'],
+
+['Mehmet Kaya','Makine Operatörü','İstanbul AVM'],
+
+['Ali Demir','Formen','Düzce TSO'],
+
+['Murat Şahin','Demirci','Ankara Lojistik']
+
+];
+
+personnelList.innerHTML=personnel.map(p=>`<div class="project">
+
+<div class="avatar">${p[0][0]}</div>
+
+<div><b>${p[0]}</b><div class="sub">${p[1]} · ${p[2]}</div></div>
+
+<span class="badge">Aktif</span></div>`).join('');
+
+function go(id){
+
+document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+
+document.getElementById(id).classList.add('active');
+
+window.scrollTo(0,0)
+
+}
+
+function toast(t){
+
+toastbox.textContent=t;
+
+toastbox.classList.add('show');
+
+setTimeout(()=>toastbox.classList.remove('show'),1800)
+
+}
+
+let financeMoves=JSON.parse(localStorage.getItem('gp_finance_moves')||'[]');
+
+function openFinance(t){
+
+if(t)ftype.value=t;
+
+finSheet.classList.add('show')
+
+}
+
+function closeFinance(){
+
+finSheet.classList.remove('show')
+
+}
+
+function tl(n){
+
+return new Intl.NumberFormat('tr-TR').format(n)+' ₺'
+
+}
+
+function saveFinance(){
+
+let amount=Number(famount.value||0);
+
+if(!amount){toast('Tutar girin');return}
+
+financeMoves.unshift({
+
+type:ftype.value,
+
+amount:amount,
+
+cari:fcari.value,
+
+bank:fbank.value,
+
+site:fsite.value,
+
+note:fnote.value,
+
+date:new Date().toLocaleDateString('tr-TR')
+
+});
+
+localStorage.setItem('gp_finance_moves',JSON.stringify(financeMoves));
+
+closeFinance();
+
+renderFinance();
+
+toast('Finans işlemi kaydedildi')
+
+}
+
+function renderFinance(){
+
+let income=financeMoves.filter(x=>x.type==='Tahsilat').reduce((a,b)=>a+b.amount,0);
+
+let expense=financeMoves.filter(x=>x.type==='Ödeme').reduce((a,b)=>a+b.amount,0);
+
+finIncome.textContent=tl(income);
+
+finExpense.textContent=tl(expense);
+
+finNet.textContent=tl(income-expense);
+
+finBalance.textContent=tl(income-expense);
+
+finMoves.innerHTML=financeMoves.length
+
+?financeMoves.map(m=>`<div class="carirow">
+
+<div><b>${m.type} · ${m.cari}</b>
+
+<div class="sub">${m.date} · ${m.bank} · ${m.site}</div></div>
+
+<div class="qty">${m.type==='Tahsilat'?'+':'-'}${tl(m.amount)}</div>
+
+</div>`).join('')
+
+:'<div class="sub">Henüz finans hareketi yok.</div>'
+
+}
+
+renderProjects();
+
+renderStock();
+
+renderCari();
+
+renderFinance();
+
+</script>
+
+</body>
+
+</html>
