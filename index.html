@@ -103,7 +103,21 @@ function renderHome(){let inc=db.finance.filter(x=>x.type==='Tahsilat').reduce((
 const rolePermissions={'Yönetici':'*','Muhasebe':['home','finance','bank','cari','stock','invoices','checks','taxes','documents','reports'],'Şantiye Sorumlusu':['home','projects','stock','personnel','vehicles','documents','isg'],'İSG':['home','projects','personnel','documents','isg'],'Görüntüleme':['home','projects','stock','cari','reports']};
 let activeUser=JSON.parse(sessionStorage.getItem('gp_user')||'null');
 function allowed(id){if(!activeUser)return false;let p=rolePermissions[activeUser.role]||[];return p==='*'||p.includes(id)}
-function login(){let u=db.users.find(x=>x.username===loginUser.value&&x.password===loginPass.value&&x.active!=='Hayır');if(!u){loginErr.textContent='Kullanıcı adı veya şifre hatalı.';return}activeUser={id:u.id,name:u.name,username:u.username,role:u.role};sessionStorage.setItem('gp_user',JSON.stringify(activeUser));applySession();go('home')}
+function login(){
+ let username=(loginUser.value||'').trim().toLocaleLowerCase('tr-TR');
+ let password=loginPass.value||'';
+ let u=(db.users||[]).find(x=>(x.username||'').trim().toLocaleLowerCase('tr-TR')===username&&x.password===password&&x.active!=='Hayır');
+ // Eski tarayıcı verilerinde yönetici hesabı bozulmuş/silinmiş olsa da ilk kurulum hesabını garanti et.
+ if(!u && (username==='yonetici'||username==='yönetici') && password==='GPplus2026!'){
+   u=(db.users||[]).find(x=>x.username==='yonetici');
+   if(u){u.name='Yönetici';u.username='yonetici';u.password='GPplus2026!';u.role='Yönetici';u.active='Evet'}
+   else{u={id:Date.now(),name:'Yönetici',username:'yonetici',password:'GPplus2026!',role:'Yönetici',active:'Evet'};(db.users||(db.users=[])).unshift(u)}
+   persist();
+ }
+ if(!u){loginErr.textContent='Kullanıcı adı veya şifre hatalı.';return}
+ activeUser={id:u.id,name:u.name,username:u.username,role:u.role};
+ sessionStorage.setItem('gp_user',JSON.stringify(activeUser));applySession();go('home')
+}
 function logout(){sessionStorage.removeItem('gp_user');activeUser=null;loginScreen.classList.remove('hidden')}
 function applySession(){if(!activeUser){loginScreen.classList.remove('hidden');return}loginScreen.classList.add('hidden');activeRole.textContent=activeUser.role;document.querySelectorAll('#modules .module').forEach((el,i)=>{let id=MODS[i]?.[0];el.style.display=(allowed(id)||(id==='users'&&activeUser.role==='Yönetici'))?'block':'none'})}
 const _openModule=openModule;openModule=function(id){if(id==='users'&&activeUser?.role!=='Yönetici'){toastMsg('Kullanıcı yönetimi yalnızca yöneticiye açıktır.');return}if(id!=='users'&&!allowed(id)){toastMsg('Bu bölüm için yetkiniz yok.');return}_openModule(id)};
